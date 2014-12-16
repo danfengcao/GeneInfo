@@ -1,18 +1,13 @@
 #!/usr/bin/python
 ##-------------------------------------------------------------------------
 ## Description:get information of transcript number per gene.
-## written by dfcao ## 2014/12/15 ##
+## firstly written by dfcao ## 2014/12/15 ##
 ##--------------------------------------------------------------------------
 
 import re
 import sys
 import os
 import string
-import sort_features
-
-if (len(sys.argv) < 2):
-    print "para error! need to use:\npython %s ensembl73.gtf\n" % sys.argv[0]
-    sys.exit()
 
 #----------------------------------------------------------------
 # output info of a gene into the f_out
@@ -26,6 +21,7 @@ def output_gene(f_out, gene):
     chrom = ""
     gene_name = ""
     gene_id = ""
+    #print gene
     for line in gene:
         m = re_ensembl_gtf.match(line)
         if m == None:
@@ -42,42 +38,52 @@ def output_gene(f_out, gene):
     l_out = 'chr%s\t%d\t%d\t%s\t%d\tgene_id "%s"; gene_name "%s"; gene_biotype "%s"\n' % (chrom, min(start), max(end), symbol, len(list(set(tran_id))), gene_id, gene_name, gene_biotype)
     f_out.write(l_out)
 
-f_ensembl = file(sys.argv[1], 'r')
-f_out_name = "tran_num_per_gene." + os.path.split(sys.argv[1])[1]
-f_out = file(f_out_name, 'w')
 
-gene_num = 0 #count total number of gene in emsembl gtf file
-tran_num = 0 #count total number of transcript in emsembl gtf file
-gene_now = [] #store the processing gene
+def get_tran_num_per_gene(file_name):
+    print "get transcript number per gene in ensembl!"
+    f_ensembl = open(file_name, 'r')
+    f_out_name = os.path.split(file_name)[1] + ".tranNum"
+    f_out = open(f_out_name, 'w')
 
-last_gene_id = ""
-last_chr = 0
-re_gene_id = re.compile('^(?P<chr>[\dxXyY]{1,2})\s+.*gene_id "(?P<gene_id>[\w\-\.]+)";')
-while True:
-    l_now = f_ensembl.readline()
-    if len(l_now) == 0:
-        break
+    gene_num = 0 #count total number of gene in emsembl gtf file
+    tran_num = 0 #count total number of transcript in emsembl gtf file
+    gene_now = [] #store the processing gene
+
+    last_gene_id = ""
+    last_chr = 0
+    re_gene_id = re.compile('^(?P<chr>[\dxXyY]{1,2})\s+.*gene_id "(?P<gene_id>[\w\-\.]+)";')
+    while True:
+        l_now = f_ensembl.readline()
+        if len(l_now) == 0:
+            break
         
-    m = re_gene_id.match(l_now)
-    if m == None:
-        continue
-    if last_chr != m.group("chr"):
-        print "chr%s is in processing" % m.group("chr")
+        m = re_gene_id.match(l_now)
+        if m == None:
+            continue
+        if last_chr != m.group("chr"):
+            print "chr%s is in processing..." % m.group("chr")
     
-    if last_gene_id != m.group("gene_id"):
-        #input a new gene now, output the info of last gene
-        if gene_num != 0:
-            output_gene(f_out, gene_now)
-            gene_now = []
-        gene_num += 1
+        if last_gene_id != m.group("gene_id"):
+            #input a new gene now, output the info of last gene
+            if gene_num != 0:
+                output_gene(f_out, gene_now)
+                gene_now = []
+            gene_num += 1
 
-    gene_now.append(l_now)
-    last_gene_id = m.group("gene_id")
-    last_chr = m.group("chr")
+        gene_now.append(l_now)
+        last_gene_id = m.group("gene_id")
+        last_chr = m.group("chr")
 
-print "gene number: %d\n" % gene_num
+    print "gene number: %d\n" % gene_num
 
-f_ensembl.close()
-f_out.close()
+    f_ensembl.close()
+    f_out.close()
 
-sort_features.sort_features(f_out_name, 22)
+
+#---------------------------------------------------------------
+# test
+# if (len(sys.argv) < 2):
+#     print "para error! need to use:\npython %s ensembl.gtf\n" % os.path.split(sys.argv[0])[1]
+#     sys.exit()
+
+# get_tran_num_per_gene(sys.argv[1])
