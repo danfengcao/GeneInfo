@@ -19,7 +19,7 @@ if (len(sys.argv) < 2):
 # f_out: output file
 # gene:  an array stores all infomation of a gene in ensembl gtf format
 def output_gene(f_out, gene):
-    re_ensembl_gtf = re.compile('^(?P<chr>[\dxXyY]{,2})\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+).*gene_id "(?P<gene_id>[\w\-\.]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)";')
+    re_ensembl_gtf = re.compile('^(?P<chr>[\dxXyY]{,2})\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+)\s+\.\s+(?P<symbol>[+-])\s+\.\s+gene_id "(?P<gene_id>[\w\-\.]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
     start = []
     end = []
     tran_id = []
@@ -36,8 +36,10 @@ def output_gene(f_out, gene):
         chrom = m.group("chr")
         gene_name = m.group("gene_name")
         gene_id = m.group("gene_id")
+        gene_biotype = m.group("gene_biotype")
+        symbol = m.group("symbol")
     
-    l_out = 'chr%s\t%d\t%d\t%d\tgene_id "%s"; gene_name "%s";\n' % (chrom, min(start), max(end), len(list(set(tran_id))), gene_id, gene_name)
+    l_out = 'chr%s\t%d\t%d\t%s\t%d\tgene_id "%s"; gene_name "%s"; gene_biotype "%s"\n' % (chrom, min(start), max(end), symbol, len(list(set(tran_id))), gene_id, gene_name, gene_biotype)
     f_out.write(l_out)
 
 f_ensembl = file(sys.argv[1], 'r')
