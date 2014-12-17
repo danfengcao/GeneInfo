@@ -49,6 +49,10 @@ def te_percentage(f_name_gene, f_name_rm):
             chr2 = chrom2num(m2.group("chr"))
             #print chr1, "" , chr2
             if chr1 < chr2:
+                te_fraction = 0
+                l_out = "chr%s\t%s\t%s\t%s\tte_per_gene %.4f\n" % (m1.group("chr"), m1.group("start"), m1.group("end"), m1.group("suffix"), te_fraction)
+                f_out.write(l_out)
+
                 line1 = f_gene.readline()
                 m1 = re_bed.match(line1)
             elif chr1 > chr2:
@@ -56,6 +60,10 @@ def te_percentage(f_name_gene, f_name_rm):
                 m2 = re_bed.match(line2)
 
         while len(line1) != 0 and len(line2) != 0 and string.atoi(m1.group("end")) < string.atoi(m2.group("start")):
+            te_fraction = 0
+            l_out = "chr%s\t%s\t%s\t%s\tte_per_gene %.4f\n" % (m1.group("chr"), m1.group("start"), m1.group("end"), m1.group("suffix"), te_fraction)
+            f_out.write(l_out)
+
             line1 = f_gene.readline()
             m1 = re_bed.match(line1)
         

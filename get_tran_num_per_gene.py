@@ -14,7 +14,7 @@ import string
 # f_out: output file
 # gene:  an array stores all infomation of a gene in ensembl gtf format
 def output_gene(f_out, gene):
-    re_ensembl_gtf = re.compile('^(?P<chr>[\dxXyY]{,2})\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+)\s+\.\s+(?P<symbol>[+-])\s+\.\s+gene_id "(?P<gene_id>[\w\-\.]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
+    re_ensembl_gtf = re.compile('^(?P<chr>[\w\.\:\-]+)\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+)\s+[\.\d]\s+(?P<symbol>[+-])\s+[\.\d]\s+gene_id "(?P<gene_id>[\w\-\.\:]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
     start = []
     end = []
     tran_id = []
@@ -25,7 +25,14 @@ def output_gene(f_out, gene):
     for line in gene:
         m = re_ensembl_gtf.match(line)
         if m == None:
-            return
+            try:
+                print m.groups()
+            except:
+                print line
+                
+            print "here regular expression error!\n"
+            sys.exit()
+
         start.append(string.atoi(m.group("start")))
         end.append(string.atoi(m.group("end")))
         tran_id.append(m.group("tran_id"))
@@ -51,7 +58,7 @@ def get_tran_num_per_gene(file_name):
 
     last_gene_id = ""
     last_chr = 0
-    re_gene_id = re.compile('^(?P<chr>[\dxXyY]{1,2})\s+.*gene_id "(?P<gene_id>[\w\-\.]+)";')
+    re_gene_id = re.compile('^(?P<chr>[\w\.\:\-]+)\s+.*gene_id "(?P<gene_id>[\w\-\.\:]+)";')
     while True:
         l_now = f_ensembl.readline()
         if len(l_now) == 0:
@@ -59,7 +66,13 @@ def get_tran_num_per_gene(file_name):
         
         m = re_gene_id.match(l_now)
         if m == None:
-            continue
+            try:
+                print m.groups()
+            except:
+                print l_now
+            print "regular expression error!\n"
+            sys.exit()
+
         if last_chr != m.group("chr"):
             print "chr%s is in processing..." % m.group("chr")
     
