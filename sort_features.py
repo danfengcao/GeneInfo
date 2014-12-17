@@ -56,10 +56,7 @@ def sort_features(f_name, nonsex_chrs, which_column):
         parts += (tmp_file + " ")
         
     os.system("cat " + parts + ">" + f_out)
-
-    for i in chr_list:
-        tmp_file = "file" + str(hash(f_in + str(i)))
-        os.system("rm " + tmp_file)
+    os.system("rm " + parts)
 
     #os.system("rm " + f_in)
 #---------------------------------------------------------------
