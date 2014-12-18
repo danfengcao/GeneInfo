@@ -9,9 +9,11 @@
 import os
 import sys
 import sort_features
-import get_tran_num_per_gene
+import transcript_num_in_gene
+import cds_in_gene
 import rm2bed
-import te_percentage_in_each_gene
+import te_in_gene
+import te_in_cds
 import disease_info
 
 if (len(sys.argv) < 4):
@@ -19,11 +21,18 @@ if (len(sys.argv) < 4):
     sys.exit()
 
 ## get transcript number of each gene
-#get_tran_num_per_gene.get_tran_num_per_gene(sys.argv[1])
+#transcript_num_in_gene.get_tran_num_per_gene(sys.argv[1])
 
-## sort annotation of ensembl
+## sort annotation of ensembl.tranNum
 #gene_tran_num = sys.argv[1] + ".tranNum"
 #sort_features.sort_features(gene_tran_num, 22, 2)
+
+## get cds regions in each gene
+#cds_in_gene.get_cds_region(sys.argv[1])
+
+## sort annotation of ensembl.cds
+#gene_cds = sys.argv[1] + ".cds"
+#sort_features.sort_features(gene_cds, 22, 2)
 
 ## transform repeatmasker into bed format
 #rm2bed.rm2bed(sys.argv[2])
@@ -33,8 +42,15 @@ if (len(sys.argv) < 4):
 ## calculate fraction of TEs in each gene
 # gene_tran_num_sort = sys.argv[1] + ".tranNum.sort"
 # te_out = sys.argv[2] + ".bed.sort.te"
-# te_percentage_in_each_gene.te_percentage(gene_tran_num_sort, te_out)
+# te_in_gene.add_te_in_gene(gene_tran_num_sort, te_out)
 
 ## add disease infomation
 ensem_te_fraction = sys.argv[1] + ".tranNum.sort.fraction"
 disease_info.disease_info(ensem_te_fraction, sys.argv[3])
+
+## calculate TE fration in cds in each gene
+gene_tran_num_sort = sys.argv[1] + ".tranNum.sort.fraction.disease"
+cds_sort = sys.argv[1] + ".cds.sort"
+te_out = sys.argv[2] + ".bed.sort.te"
+te_in_cds.add_te_in_cds(gene_tran_num_sort, cds_sort, te_out)
+

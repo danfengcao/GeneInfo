@@ -7,6 +7,7 @@
 import os
 import sys
 import re
+import string
 
 def substitute_space(f_name):
     print "substitute space into \\t..."
@@ -38,7 +39,10 @@ def substitute_space(f_name):
 # f_name: input file to be processed
 # nonsex_chrs: the number of nonsex chromosomes
 def sort_features(f_name, nonsex_chrs, which_column):
-    
+    if type(nonsex_chrs) == str:
+        nonsex_chrs = string.atoi(nonsex_chrs)
+    if type(which_column) == str:
+        which_column = string.atoi(which_column)
     #substitute_space(f_name)
     
     print "sort annotation..."
@@ -61,8 +65,8 @@ def sort_features(f_name, nonsex_chrs, which_column):
     #os.system("rm " + f_in)
 #---------------------------------------------------------------
 # test
-# if (len(sys.argv) < 2):
-#     print "para error! need to use:\npython %s ensembl.gtf.tranNum\n" % sys.argv[0]
+# if (len(sys.argv) < 4):
+#     print "para error! need to use:\npython %s ensembl73.features nonchromsome_num(22 for human) sort_by_which_column\n" % sys.argv[0]
 #     sys.exit()
 
-# sort_features(sys.argv[1], 22, 2)
+# sort_features(sys.argv[1], sys.argv[2], sys.argv[3])
