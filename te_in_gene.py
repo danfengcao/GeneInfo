@@ -21,21 +21,17 @@ def chrom2num(chrome):
 
 def add_te_in_gene(f_name_gene, f_name_rm):
     print "calculate te percentage of te in each gene..."
-    f_out_name = os.path.split(f_name_gene)[1] + ".fraction"
-    f_out = open(f_out_name, 'w')
-    f_tmp_name = "file" + str(hash(f_name_gene))
-    
-    print "use bedtools to get intersect region..."
-    os.system("bedtools intersect -a " + f_name_gene + " -b " + f_name_rm + " > " + f_tmp_name)
-    
-    genes = {}
-    f_gene = open(f_name_gene)
-    f_tmp = open(f_tmp_name)
-    re_bed = re.compile('^chr(?P<chr>[\dxXyY]{1,2})\s+(?P<start>\d+)\s+(?P<end>\d+)\s+.*gene_id "(?P<gene_id>[\w\.\-\:]+)";\s+')
-    
-    #store ensembl gene_id in the hash genes
+
+    f_rm = open(f_name_rm)
+    tes = {}
+    #store infomation of TEs, tes[chr] = [start, end]
+    for chr_i in range(1, 25):
+        tes[chr_i] = []
+    re_bed = re.compile('^chr(?P<chr>[\dxXyY]{1,2})\s+(?P<start>\d+)\s+(?P<end>\d+)\s+')
+
+    #store TE infomation in the vector tes
     while True:
-        l_now = f_gene.readline()
+        l_now = f_rm.readline()
         if len(l_now) == 0:
             break
 
@@ -48,37 +44,93 @@ def add_te_in_gene(f_name_gene, f_name_rm):
             print "regular expression match error!\n"
             sys.exit()
 
-        genes[m.group("gene_id")] = [string.atoi(m.group("start")), string.atoi(m.group("end")), 0]
-    f_gene.close
+        tes[chrom2num(m.group("chr"))].append([string.atoi(m.group("start")), string.atoi(m.group("end"))])
+    f_rm.close
 
-    #traverse overlapped region
-    while True:
-        l_now = f_tmp.readline()
-        if len(l_now) == 0:
-            break
-
-        m = re_bed.match(l_now)
-        if m == None:
-            print "regular expression match error!\n"
-            sys.exit()
-
-        genes[m.group("gene_id")][2] += (string.atoi(m.group("end")) - string.atoi(m.group("start")) + 1)
-    f_tmp.close
-
-    #calculate fraction of TE in each gene
+    #calculate TE fraction in each gene
     f_gene = open(f_name_gene)
+    f_out_name = os.path.split(f_name_gene)[1] + ".tegene"
+    f_out = open(f_out_name, 'w')
+    last_chr = 0
+    te_chr = 1 #index of tes, range:1-24
+    i = 0 #index of tes[chr] 
     while True:
         l_now = f_gene.readline()
+        #print l_now
+
         if len(l_now) == 0:
             break
+
+        if te_chr == 25:
+            te_fraction = 0
+            l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+            f_out.write(l_out)
+            continue
 
         m = re_bed.match(l_now)
         if m == None:
             print "regular expression match error!\n"
             sys.exit()
 
-        fraction = float(genes[m.group("gene_id")][2]) * 100/ (genes[m.group("gene_id")][1] - genes[m.group("gene_id")][0] + 1)
-        l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), fraction)
+        chrome = chrom2num(m.group("chr"))
+        start = string.atoi(m.group("start"))
+        end = string.atoi(m.group("end"))
+
+        if last_chr != chrome:
+            print "chr%s is in processing..." % chrome
+        last_chr = chrome
+
+        if te_chr < 25 and i == len(tes[te_chr]):
+            te_chr += 1
+            i = 0
+
+        if te_chr < 25 and chrome != te_chr:
+            if chrome > te_chr:
+                te_chr += 1
+                i = 0
+            else:
+                te_fraction = 0
+                l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+                f_out.write(l_out)
+                continue
+
+        if te_chr == 25:
+            te_fraction = 0
+            l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+            f_out.write(l_out)
+            continue
+
+
+        #locate the right TE which is in front of the gene
+        while i > 0 and start < tes[te_chr][i][1]:
+            i -= 1
+
+        #calculate a gene by moving TE vector
+        overlap = 0    
+        while i < len(tes[te_chr]) and end >= tes[te_chr][i][0]:
+            #print "chrte = %d, i = %d, gene_st = %s, gene_en = %s, te_start = %s" % (te_chr, i, start, end, tes[te_chr][i][0])
+            while i < len(tes[te_chr]) and chrome == te_chr and start > tes[te_chr][i][1]:
+                i += 1
+            if i == len(tes[te_chr]) or chrome != te_chr:
+                break
+            if tes[te_chr][i][0] <= start and start <= tes[te_chr][i][1]:
+                if tes[te_chr][i][1] <= end:
+                    overlap += (tes[te_chr][i][1] - start + 1)
+                    i += 1
+                elif end < tes[te_chr][i][1]:
+                    overlap += (end - start + 1)
+                    break
+            elif start < tes[te_chr][i][0] and tes[te_chr][i][0] <= end:
+                if tes[te_chr][i][1] <= end:
+                    overlap += (tes[te_chr][i][1] - tes[te_chr][i][0] + 1)
+                    i += 1
+                elif end < tes[te_chr][i][1]:
+                    overlap += (end - tes[te_chr][i][0] + 1)
+                    break
+
+        te_fraction = float(overlap) * 100 / (end - start + 1)
+        print te_fraction
+        l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
         f_out.write(l_out)
     f_gene.close
     f_out.close
@@ -86,8 +138,8 @@ def add_te_in_gene(f_name_gene, f_name_rm):
 
 #---------------------------------------------------------------
 # test
-# if (len(sys.argv) < 3):
-#     print "para error! need to use:\npython %s ensembl.gtf.tranNum.sort human19.rm.bed.sort.te\n" % os.path.split(sys.argv[0])[1]
-#     sys.exit()
+if (len(sys.argv) < 3):
+    print "para error! need to use:\npython %s ensembl73.gtf.tranNum.sort human19.rm.bed.sort.te.uniq\n" % os.path.split(sys.argv[0])[1]
+    sys.exit()
 
-# add_te_in_gene(sys.argv[1], sys.argv[2])
+add_te_in_gene(sys.argv[1], sys.argv[2])

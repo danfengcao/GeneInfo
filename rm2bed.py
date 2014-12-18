@@ -43,16 +43,22 @@ def rm2bed(rm_file):
 
 def get_te(rm_sort_file):
     print "get TE elements..."
-    te = ("SINE","LINE","LTR","DNA")
-    parts = ""
-    for i in te:
-        tmp_file = "file" + str(hash(rm_sort_file + i))
-        os.system("grep " + i + " " + rm_sort_file + " > " + tmp_file)
-        parts += (tmp_file + " ")
+    
+    f_rm = open(rm_sort_file, 'r')
+    f_out_name = os.path.split(rm_sort_file)[1] + ".te"
+    f_out = open(f_out_name, 'w')
 
-    f_out = rm_sort_file + ".te"
-    os.system("cat " + parts + " > " + f_out)
-    os.system("rm " + parts)
+    last_chr = 0
+    re_rm_repeat = re.compile('^\w+\s+\d+\s+\d+\s+(LINE|SINE|DNA|LTR)')
+    while True:
+        l_now = f_rm.readline()
+        if len(l_now) == 0:
+            break
+        
+        m = re_rm_repeat.match(l_now)
+        if m == None:
+            continue
+        f_out.write(l_now)
 
 ##---------------------------------------------------------------
 ## test
@@ -61,4 +67,4 @@ def get_te(rm_sort_file):
 #     sys.exit()
 
 ## rm2bed(sys.argv[1])
-# get_te(sys.argv[1] + ".bed.sort")
+#get_te(sys.argv[1] + ".bed.sort")

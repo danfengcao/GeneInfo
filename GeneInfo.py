@@ -15,6 +15,7 @@ import rm2bed
 import te_in_gene
 import te_in_cds
 import disease_info
+import filt_duplicate
 
 if (len(sys.argv) < 4):
     print "para error! need to use:\npython %s ensembl-version.gtf human19.rm newDiseaseGeneYear\n" % sys.argv[0]
@@ -39,10 +40,14 @@ if (len(sys.argv) < 4):
 #te_in = sys.argv[2] + ".bed.sort"
 #rm2bed.get_te(te_in)
 
+## reserve one piece of duplicated region in TEs
+#te_out = sys.argv[2] + ".bed.sort.te"
+#filt_duplicate.filt_duplicate(te_out)
+
 ## calculate fraction of TEs in each gene
-# gene_tran_num_sort = sys.argv[1] + ".tranNum.sort"
-# te_out = sys.argv[2] + ".bed.sort.te"
-# te_in_gene.add_te_in_gene(gene_tran_num_sort, te_out)
+#gene_tran_num_sort = sys.argv[1] + ".tranNum.sort"
+#te_out = sys.argv[2] + ".bed.sort.te.uniq"
+#te_in_gene.add_te_in_gene(gene_tran_num_sort, te_out)
 
 ## add disease infomation
 ensem_te_fraction = sys.argv[1] + ".tranNum.sort.fraction"

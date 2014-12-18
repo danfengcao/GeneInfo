@@ -99,6 +99,7 @@ def add_te_in_cds(f_name_gene, f_name_cds, f_name_rm):
         fraction = 0
         if genes[m.group("gene_id")][0] > 0:
             fraction = float(genes[m.group("gene_id")][1]) * 100/ genes[m.group("gene_id")][0]
+        print fraction
         l_out = "%s\tte_in_cds %.2f\n" % (l_now.strip(), fraction)
         f_out.write(l_out)
     f_gene.close
@@ -107,8 +108,8 @@ def add_te_in_cds(f_name_gene, f_name_cds, f_name_rm):
 
 #---------------------------------------------------------------
 # test
-# if (len(sys.argv) < 4):
-#     print "para error! need to use:\npython %s ensembl73.gtf.tranNum.sort.fraction ensembl73.gtf.cds.sort human19.rm.bed.sort.te\n" % os.path.split(sys.argv[0])[1]
-#     sys.exit()
+if (len(sys.argv) < 4):
+    print "para error! need to use:\npython %s ensembl73.gtf.tranNum.sort.fraction ensembl73.gtf.cds.sort human19.rm.bed.sort.te\n" % os.path.split(sys.argv[0])[1]
+    sys.exit()
 
-# add_te_in_cds(sys.argv[1], sys.argv[2], sys.argv[3])
+add_te_in_cds(sys.argv[1], sys.argv[2], sys.argv[3])
