@@ -20,7 +20,7 @@ def chrom2num(chrome):
         return string.atoi(chrome)
 
 def add_te_in_gene(f_name_gene, f_name_rm):
-    print "calculate te percentage of te in each gene..."
+    print "\ncalculate TE percentage of te in each gene...\n"
 
     f_rm = open(f_name_rm)
     tes = {}
@@ -62,8 +62,9 @@ def add_te_in_gene(f_name_gene, f_name_rm):
             break
 
         if te_chr == 25:
+            te_len = 0
             te_fraction = 0
-            l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+            l_out = "%s\tte_in_gene %d %.2f\n" % (l_now.strip(), te_len, te_fraction)
             f_out.write(l_out)
             continue
 
@@ -89,14 +90,16 @@ def add_te_in_gene(f_name_gene, f_name_rm):
                 te_chr += 1
                 i = 0
             else:
+                te_len = 0
                 te_fraction = 0
-                l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+                l_out = "%s\tte_in_gene %d %.2f\n" % (l_now.strip(), te_len, te_fraction)
                 f_out.write(l_out)
                 continue
 
         if te_chr == 25:
+            te_len = 0
             te_fraction = 0
-            l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+            l_out = "%s\tte_in_gene %d %.2f\n" % (l_now.strip(), te_len, te_fraction)
             f_out.write(l_out)
             continue
 
@@ -129,8 +132,8 @@ def add_te_in_gene(f_name_gene, f_name_rm):
                     break
 
         te_fraction = float(overlap) * 100 / (end - start + 1)
-        print te_fraction
-        l_out = "%s\tte_in_gene %.2f\n" % (l_now.strip(), te_fraction)
+        #print te_fraction
+        l_out = "%s\tte_in_gene %d %d %.2f\n" % (l_now.strip(), (end-start+1), overlap, te_fraction)
         f_out.write(l_out)
     f_gene.close
     f_out.close
@@ -138,8 +141,8 @@ def add_te_in_gene(f_name_gene, f_name_rm):
 
 #---------------------------------------------------------------
 # test
-if (len(sys.argv) < 3):
-    print "para error! need to use:\npython %s ensembl73.gtf.tranNum.sort human19.rm.bed.sort.te.uniq\n" % os.path.split(sys.argv[0])[1]
-    sys.exit()
+# if (len(sys.argv) < 3):
+#     print "para error! need to use:\npython %s ensembl73.gtf.tranNum.sort human19.rm.bed.sort.te.uniq\n" % os.path.split(sys.argv[0])[1]
+#     sys.exit()
 
-add_te_in_gene(sys.argv[1], sys.argv[2])
+# add_te_in_gene(sys.argv[1], sys.argv[2])

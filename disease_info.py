@@ -9,7 +9,7 @@ import sys
 import re
 
 def disease_info(f_name_tran_num, disease_gene_year):
-    print "add infomation of disease..."
+    print "\nadd infomation of disease...\n"
 
     f_out = open(os.path.split(f_name_tran_num)[1] + ".disease", "w")
     f_disease = open(disease_gene_year)
@@ -57,7 +57,7 @@ def disease_info(f_name_tran_num, disease_gene_year):
 ##---------------------------------------------------------------
 ## test
 # if (len(sys.argv) < 3):
-#     print "para error! need to use:\npython %s ensembl.gtf.tranNum.sort.fraction newDiseaseGeneYear\n" % sys.argv[0]
+#     print "para error! need to use:\npython %s ensembl.gtf.tranNum.sort.tegene.tecds newDiseaseGeneYear\n" % sys.argv[0]
 #     sys.exit()
 
 # disease_info(sys.argv[1], sys.argv[2])

@@ -10,7 +10,7 @@ import os
 import string
 
 def filt_duplicate(f_name):
-    print "filt duplicate region, reserve one piece..."
+    print "\nfilt duplicate region, reserve one piece...\n"
 
     f_in = open(f_name)
     f_out_name = os.path.split(f_name)[1] + ".uniq"
@@ -52,8 +52,8 @@ def filt_duplicate(f_name):
 
 ##-----------------------------------------
 ## test
-if (len(sys.argv) < 2):
-    print "para error! need to use:\npython %s human19.rm.sort.te" % sys.argv[0]
-    sys.exit()
+# if (len(sys.argv) < 2):
+#     print "para error! need to use:\npython %s human19.rm.sort.te" % sys.argv[0]
+#     sys.exit()
 
-filt_duplicate(sys.argv[1])
+# filt_duplicate(sys.argv[1])

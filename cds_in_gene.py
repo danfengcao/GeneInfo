@@ -11,7 +11,8 @@ import os
 #----------------------------------------------------------------
 # output cds in ensembl database
 def get_cds_region(file_name):
-    print "get cds region in ensembl..."
+    print "\nget cds region in ensembl...\n"
+
     f_ensembl = open(file_name, 'r')
     f_out_name = os.path.split(file_name)[1] + ".cds"
     f_out = open(f_out_name, 'w')

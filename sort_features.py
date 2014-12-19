@@ -10,7 +10,6 @@ import re
 import string
 
 def substitute_space(f_name):
-    print "substitute space into \\t..."
     f_in = open(f_name, "r")
     f_out = open(os.path.split(f_name)[1] + ".tmp", "w")
     
@@ -45,7 +44,7 @@ def sort_features(f_name, nonsex_chrs, which_column):
         which_column = string.atoi(which_column)
     #substitute_space(f_name)
     
-    print "sort annotation..."
+    print "\nsort feature annotation...\n"
     f_in = f_name
     f_out = os.path.split(f_name)[1] + ".sort"
 

@@ -10,7 +10,8 @@ import os
 import sort_features
 
 def rm2bed(rm_file):
-    print "transform repeatmasker file into bed format!"
+    print "\ntransform repeatmasker file into bed format...\n"
+
     f_rm = open(rm_file, 'r')
     f_out_name = os.path.split(rm_file)[1] + ".bed"
     f_out = open(f_out_name, 'w')
@@ -42,7 +43,7 @@ def rm2bed(rm_file):
     sort_features.sort_features(f_out_name, 22, 2)
 
 def get_te(rm_sort_file):
-    print "get TE elements..."
+    print "get TE elements in repeatmasker...\n"
     
     f_rm = open(rm_sort_file, 'r')
     f_out_name = os.path.split(rm_sort_file)[1] + ".te"

@@ -47,7 +47,8 @@ def output_gene(f_out, gene):
 
 
 def get_tran_num_per_gene(file_name):
-    print "get transcript number per gene in ensembl!"
+    print "\nget transcript number per gene in ensembl...\n"
+
     f_ensembl = open(file_name, 'r')
     f_out_name = os.path.split(file_name)[1] + ".tranNum"
     f_out = open(f_out_name, 'w')
@@ -96,7 +97,7 @@ def get_tran_num_per_gene(file_name):
 #---------------------------------------------------------------
 # test
 # if (len(sys.argv) < 2):
-#     print "para error! need to use:\npython %s ensembl.gtf\n" % os.path.split(sys.argv[0])[1]
+#     print "para error! need to use:\npython %s ensembl73.gtf\n" % os.path.split(sys.argv[0])[1]
 #     sys.exit()
 
 # get_tran_num_per_gene(sys.argv[1])
