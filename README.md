@@ -22,18 +22,20 @@ Each line above stands for a column (seperated by '\t') in the output file, Gene
 
 To generate GeneInfo.txt, all you need to do is 3 simple steps.
 
-1. Download **Homo_sapiens.GRCh37.73.gtf.gz** from [Ensembl Genome Browser](ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz)
+1. Download **Homo_sapiens.GRCh37.73.gtf.gz** from ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz
 
 2. Download **hg19.fa.out.gz.gz** from [RepeatMasker](http://www.repeatmasker.org/genomes/hg19/RepeatMasker-rm405-db20140131/hg19.fa.out.gz)
 
 3. Input command
 
+```
 
-    gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
+`gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf`
 
-    gunzip -c hg19.fa.out.gz.gz > human19.rm
+`gunzip -c hg19.fa.out.gz.gz > human19.rm`
 
-    python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear
+`python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear`
 
+```
 ---
 Firstly written by gentle smart hansome dfcao ## 2014-12-20
