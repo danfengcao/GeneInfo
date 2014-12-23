@@ -22,7 +22,8 @@ import disease_info
 import filt_duplicate
 
 if (len(sys.argv) < 4):
-    print "\npara error! need to use:\npython %s ensembl-version.gtf human19.rm newDiseaseGeneEachYear\n" % sys.argv[0]
+    print "\npara error! need to use:\npython %s ensembl.gtf human19.rm newDiseaseGeneEachYear\n" % sys.argv[0]
+    print "open README.md to read valuable infomation!!!"
     sys.exit()
 
 ## get transcript number of each gene
