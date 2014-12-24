@@ -33,5 +33,7 @@ gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
 gunzip -c hg19.fa.out.gz.gz > human19.rm
 python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear
 ```
+
+
 ---
 Firstly written by gentle smart hansome dfcao ## 2014-12-20
