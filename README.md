@@ -30,9 +30,7 @@ To generate GeneInfo.txt, all you need to do is 3 simple steps.
 
 >```
 gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
-
 gunzip -c hg19.fa.out.gz.gz > human19.rm
-
 python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear
 ```
 ---
