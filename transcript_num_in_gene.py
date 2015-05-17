@@ -1,19 +1,23 @@
-#!/usr/bin/python
-##-------------------------------------------------------------------------
-## Description:get information of transcript number per gene.
-## firstly written by dfcao ## 2014/12/15 ##
-##--------------------------------------------------------------------------
+#!/usr/bin/python2.7
+'''
+get information of transcript number per gene.
 
-import re
+firstly written by compassionate aggressive glamorous dfcao, 2014/12/15
+'''
+
+__author__ = 'dfcao'
+
 import sys
 import os
+import re
 import string
 
-#----------------------------------------------------------------
-# output info of a gene into the f_out
-# f_out: output file
-# gene:  an array stores all infomation of a gene in ensembl gtf format
 def output_gene(f_out, gene):
+    '''Output information of a gene into the file f_out
+
+    f_out: FILE operator of output file
+    gene: an array stores all infomation of a gene in ensembl gtf format'''
+
     re_ensembl_gtf = re.compile('^(?P<chr>[\w\.\:\-]+)\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+)\s+[\.\d]\s+(?P<symbol>[+-])\s+[\.\d]\s+gene_id "(?P<gene_id>[\w\-\.\:]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
     start = []
     end = []
@@ -21,16 +25,14 @@ def output_gene(f_out, gene):
     chrom = ""
     gene_name = ""
     gene_id = ""
+
     #print gene
     for line in gene:
         m = re_ensembl_gtf.match(line)
-        if m == None:
-            try:
-                print m.groups()
-            except:
-                print line
-                
-            print "here regular expression error!\n"
+        if not m:
+            print line
+            print '^(?P<chr>[\w\.\:\-]+)\s+\w+\s+\w+\s+(?P<start>\d+)\s+(?P<end>\d+)\s+[\.\d]\s+(?P<symbol>[+-])\s+[\.\d]\s+gene_id "(?P<gene_id>[\w\-\.\:]+)";transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"'
+            print "here regular expression error!"
             sys.exit()
 
         start.append(string.atoi(m.group("start")))
@@ -46,12 +48,18 @@ def output_gene(f_out, gene):
     f_out.write(l_out)
 
 
-def get_tran_num_per_gene(file_name):
-    print "\nget transcript number per gene in ensembl...\n"
+def get_tran_num_per_gene(f_name_gtf, f_name_out = ""):
+    '''Get transcript number per gene in ensembl.
 
-    f_ensembl = open(file_name, 'r')
-    f_out_name = os.path.split(file_name)[1] + ".tranNum"
-    f_out = open(f_out_name, 'w')
+    f_name_gtf: name of gtf format file, such as ensembl.gtf
+    f_name_out: name of output file'''
+
+    print "get transcript number per gene in ensembl..."
+
+    f_ensembl = open(f_name_gtf, 'r')
+    if f_name_out == "":
+        f_name_out = os.path.split(f_name_gtf)[1] + ".tranNum"
+    f_out = open(f_name_out, 'w')
 
     gene_num = 0 #count total number of gene in emsembl gtf file
     tran_num = 0 #count total number of transcript in emsembl gtf file
@@ -62,11 +70,13 @@ def get_tran_num_per_gene(file_name):
     re_gene_id = re.compile('^(?P<chr>[\w\.\:\-]+)\s+.*gene_id "(?P<gene_id>[\w\-\.\:]+)";')
     while True:
         l_now = f_ensembl.readline()
-        if len(l_now) == 0:
+        if not l_now:
             break
-        
+        if re.match('^#', l_now):
+            continue
+
         m = re_gene_id.match(l_now)
-        if m == None:
+        if not m:
             try:
                 print m.groups()
             except:
@@ -96,8 +106,9 @@ def get_tran_num_per_gene(file_name):
 
 #---------------------------------------------------------------
 # test
-# if (len(sys.argv) < 2):
-#     print "para error! need to use:\npython %s ensembl73.gtf\n" % os.path.split(sys.argv[0])[1]
-#     sys.exit()
+if __name__ == '__main__':
+    if (len(sys.argv) < 3):
+        print "Para error! need to use:\npython %s ensembl73.gtf output_file_name" % os.path.split(sys.argv[0])[1]
+        sys.exit()
 
-# get_tran_num_per_gene(sys.argv[1])
+    get_tran_num_per_gene(sys.argv[1], sys.argv[2])

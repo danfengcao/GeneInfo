@@ -17,7 +17,7 @@ def get_cds_region(file_name):
     f_out_name = os.path.split(file_name)[1] + ".cds"
     f_out = open(f_out_name, 'w')
 
-    re_cds = re.compile('^(?P<chr>[\w\.\:\-]+)\s+\w+\s+CDS\s+(?P<start>\d+)\s+(?P<end>\d+)\s+[\.\d]\s+(?P<symbol>[+-])\s+[\.\d]\s+gene_id "(?P<gene_id>[\w\-\.\:]+)"; transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)"; gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
+    re_cds = re.compile('^(?P<chr>[\w\.\:\-]+)\s+\w+\s+CDS\s+(?P<start>\d+)\s+(?P<end>\d+)\s+[\.\d]\s+(?P<symbol>[+-])\s+[\.\d]\s+gene_id "(?P<gene_id>[\w\-\.\:]+)";.*transcript_id "(?P<tran_id>[\w\-\.\:]+)";.*gene_name "(?P<gene_name>[\w\-\.\:]+)";.*gene_biotype "(?P<gene_biotype>[\w\-\.]+)"')
     while True:
         l_now = f_ensembl.readline()
         if len(l_now) == 0:

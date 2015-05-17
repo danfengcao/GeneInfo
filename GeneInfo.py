@@ -22,12 +22,13 @@ import disease_info
 import filt_duplicate
 
 if (len(sys.argv) < 4):
-    print "\npara error! need to use:\npython %s ensembl.gtf human19.rm newDiseaseGeneEachYear\n" % sys.argv[0]
+    print "\npara error! need to use:\npython %s hg19_ensembl73.gtf hg19.rm newDiseaseGeneEachYear\n" % sys.argv[0]
     print "open README.md to read valuable infomation!!!"
     sys.exit()
 
 ## get transcript number of each gene
-transcript_num_in_gene.get_tran_num_per_gene(sys.argv[1])
+gene_tran_num = os.path.split(sys.argv[1])[1] + ".tranNum"
+transcript_num_in_gene.get_tran_num_per_gene(sys.argv[1], gene_tran_num)
 
 ## sort annotation of ensembl.tranNum
 gene_tran_num = os.path.split(sys.argv[1])[1] + ".tranNum"

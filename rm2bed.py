@@ -10,7 +10,9 @@ import os
 import sort_features
 
 def rm2bed(rm_file):
-    print "\ntransform repeatmasker file into bed format...\n"
+    '''Transform repeatmasker file into bed format.
+
+    '''
 
     f_rm = open(rm_file, 'r')
     f_out_name = os.path.split(rm_file)[1] + ".bed"

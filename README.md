@@ -29,11 +29,14 @@ To generate GeneInfo.txt, all you need to do is 3 simple steps.
 3. Input command
 
 >```
+git clone https://github.com/danfengcao/GeneInfo.git
+cd GeneInfo
 gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
 gunzip -c hg19.fa.out.gz.gz > human19.rm
 python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear
 ```
 
+Output file: GeneInfomation.txt
 
 ---
 Firstly written by gentle smart hansome dfcao ## 2014-12-20
