@@ -22,21 +22,34 @@ Each line above stands for a column (seperated by '\t') in the output file, Gene
 
 To generate GeneInfo.txt, all you need to do is 3 simple steps.
 
-1. Download **Homo_sapiens.GRCh37.73.gtf.gz** from <ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz>
-
-2. Download **hg19.fa.out.gz.gz** from [RepeatMasker](http://www.repeatmasker.org/genomes/hg19/RepeatMasker-rm405-db20140131/hg19.fa.out.gz)
-
-3. Input command
+1. clone GeneInfo project to your Linux environment.
 
 >```
 git clone https://github.com/danfengcao/GeneInfo.git
-cd GeneInfo
-gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
-gunzip -c hg19.fa.out.gz.gz > human19.rm
-python GeneInfo.py ensembl.gtf human19.rm newDiseaseGeneEachYear
 ```
 
-Output file: GeneInfomation.txt
+2. Download **Homo_sapiens.GRCh37.73.gtf.gz** from <ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz>
+
+   Download **hg19.fa.out.gz.gz** from [RepeatMasker](http://www.repeatmasker.org/genomes/hg19/RepeatMasker-rm405-db20140131/hg19.fa.out.gz)
+
+>```
+cd GeneInfo/data
+wget ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz
+wget http://www.repeatmasker.org/genomes/hg19/RepeatMasker-rm405-db20140131/hg19.fa.out.gz
+gunzip -c Homo_sapiens.GRCh37.73.gtf.gz > ensembl.gtf
+gunzip -c hg19.fa.out.gz > human19.rm
+```
+
+3. Run the program and you will get the result in **GeneInfomation.txt**
+
+>```
+cd ..
+python GeneInfo.py data/ensembl.gtf data/human19.rm data/newDiseaseGeneEachYear
+```
 
 ---
 Firstly written by gentle smart hansome dfcao ## 2014-12-20
+
+If you have any question or suggestion, please send email to me(cdf4026176@aliyun.com).
+
+如果您有任何疑问或建议，欢迎给发邮件给我（cdf4026176@aliyun.com）。

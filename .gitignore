@@ -1,6 +1,9 @@
 #mouse analysis
 mm10/
 
+#files in data
+data/*
+
 #Emacs
 *~
 

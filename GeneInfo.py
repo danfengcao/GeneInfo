@@ -12,14 +12,7 @@
 
 import os
 import sys
-import sort_features
-import transcript_num_in_gene
-import cds_in_gene
-import rm2bed
-import te_in_gene
-import te_in_cds
-import disease_info
-import filt_duplicate
+from scripts import transcript_num_in_gene,cds_in_gene,sort_features, rm2bed, te_in_gene, te_in_cds, disease_info, filt_duplicate
 
 if (len(sys.argv) < 4):
     print "\npara error! need to use:\npython %s hg19_ensembl73.gtf hg19.rm newDiseaseGeneEachYear\n" % sys.argv[0]
