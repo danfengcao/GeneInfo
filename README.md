@@ -27,7 +27,7 @@ To generate GeneInfo.txt, all you need to do is 3 simple steps.
 git clone https://github.com/danfengcao/GeneInfo.git
 ```
 
-2, Download **Homo_sapiens.GRCh37.73.gtf.gz** from <ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz> and download **hg19.fa.out.gz.gz** from [RepeatMasker](http://www.repeatmasker.org/genomes/hg19/RepeatMasker-rm405-db20140131/hg19.fa.out.gz)
+2, Download gene annotation **ensembl.gtf** and repeat annotation **human19.rm**.
 >```
 cd GeneInfo/data
 wget ftp://ftp.ensembl.org/pub/release-73/gtf/homo_sapiens/Homo_sapiens.GRCh37.73.gtf.gz
@@ -43,7 +43,6 @@ python GeneInfo.py data/ensembl.gtf data/human19.rm data/newDiseaseGeneEachYear
 ```
 
 ---
-Firstly written by gentle smart hansome dfcao ## 2014-12-20
 
 If you have any question or suggestion, please send email to me(cdf4026176@aliyun.com).
 
