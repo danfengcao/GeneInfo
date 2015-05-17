@@ -3,6 +3,7 @@ mm10/
 
 #files in data
 data/*
+!data/newDiseaseGeneEachYear
 
 #Emacs
 *~
